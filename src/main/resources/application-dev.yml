@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: testuser1
+    password: testpass1
+    url: jdbc:postgresql://localhost:5432/testdb1
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+      format_sql: true
+      use_sql_comments: true
+      default_batch_fetch_size: 100
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ljseokd@gmail.com
+    password: tikgxkzwvcceothi
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable:true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
