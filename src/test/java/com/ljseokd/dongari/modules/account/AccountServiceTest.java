@@ -3,6 +3,7 @@ package com.ljseokd.dongari.modules.account;
 import com.ljseokd.dongari.infra.AbstractContainerBaseTest;
 import com.ljseokd.dongari.infra.MockMvcTest;
 import com.ljseokd.dongari.infra.WithAccount;
+import com.ljseokd.dongari.modules.account.form.SignUpForm;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
