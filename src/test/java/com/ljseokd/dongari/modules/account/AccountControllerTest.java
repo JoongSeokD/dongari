@@ -2,8 +2,10 @@ package com.ljseokd.dongari.modules.account;
 
 import com.ljseokd.dongari.infra.AbstractContainerBaseTest;
 import com.ljseokd.dongari.infra.MockMvcTest;
+import com.ljseokd.dongari.infra.WithAccount;
 import com.ljseokd.dongari.infra.mail.EmailMessage;
 import com.ljseokd.dongari.infra.mail.EmailService;
+import com.ljseokd.dongari.modules.account.form.SignUpForm;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,14 @@ class AccountControllerTest extends AbstractContainerBaseTest {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired AccountService accountService;
+
     @MockBean
     EmailService emailService;
 
     @DisplayName("회원 가입 폼")
     @Test
-    void signUpForm() throws Exception {
+    void sign_up_form() throws Exception {
         mockMvc.perform(get("/sign-up"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/sign-up"))
@@ -75,6 +79,50 @@ class AccountControllerTest extends AbstractContainerBaseTest {
                 .andExpect(model().attributeExists("signUpForm"))
                 .andExpect(view().name("account/sign-up"))
                 .andExpect(unauthenticated());
+    }
+
+    @DisplayName("이메일 인증 화면")
+    @Test
+    @WithAccount("ljseokd")
+    void check_email() throws Exception {
+        mockMvc.perform(get("/check-email"))
+                .andExpect(model().attributeExists("email"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("account/check-email"));
+    }
+
+    @DisplayName("이메일 인증 성공")
+    @Test
+    void check_email_success() throws Exception {
+
+        SignUpForm ljseokd = SignUpForm.builder()
+                .nickname("ljseokd")
+                .email("ljseokd@gmail.com")
+                .password("12345678")
+                .build();
+        accountService.processNewAccount(ljseokd);
+        Account account = accountRepository.findByEmail(ljseokd.getEmail());
+
+
+        mockMvc.perform(get("/check-email-token")
+                .param("email", account.getEmail())
+                .param("token", account.getEmailCheckToken()))
+            .andExpect(status().isOk())
+            .andExpect(model().attributeExists("numberOfUser"))
+            .andExpect(model().attributeExists("nickname"))
+            .andExpect(authenticated().withUsername("ljseokd"));
+    }
+
+    @DisplayName("이메일 인증 실패")
+    @Test
+    void check_email_fail() throws Exception {
+
+        mockMvc.perform(get("/check-email-token")
+                .param("email", "email@gmail.com")
+                .param("token", "1234"))
+            .andExpect(status().isOk())
+            .andExpect(model().hasErrors())
+            .andExpect(unauthenticated());
     }
 
 }
