@@ -1,5 +1,6 @@
 package com.ljseokd.dongari.modules.account;
 
+import com.ljseokd.dongari.infra.AbstractContainerBaseTest;
 import com.ljseokd.dongari.infra.MockMvcTest;
 import com.ljseokd.dongari.infra.WithAccount;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Slf4j
 @MockMvcTest
-class AccountServiceTest {
+class AccountServiceTest extends AbstractContainerBaseTest {
 
     @Autowired AccountRepository accountRepository;
     @Autowired AccountService accountService;
@@ -33,7 +34,8 @@ class AccountServiceTest {
                 .password("12345678")
                 .build();
 
-        Account newAccount = accountService.processNewAccount(ljseokd);
+        accountService.processNewAccount(ljseokd);
+        Account newAccount = accountRepository.findByNickname("ljseokd");
         assertNotNull(newAccount);
     }
 
