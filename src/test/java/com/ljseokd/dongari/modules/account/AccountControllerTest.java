@@ -2,12 +2,17 @@ package com.ljseokd.dongari.modules.account;
 
 import com.ljseokd.dongari.infra.AbstractContainerBaseTest;
 import com.ljseokd.dongari.infra.MockMvcTest;
+import com.ljseokd.dongari.infra.mail.EmailMessage;
+import com.ljseokd.dongari.infra.mail.EmailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
@@ -23,6 +28,9 @@ class AccountControllerTest extends AbstractContainerBaseTest {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @MockBean
+    EmailService emailService;
 
     @DisplayName("회원 가입 폼")
     @Test
@@ -52,6 +60,7 @@ class AccountControllerTest extends AbstractContainerBaseTest {
         assertNotNull(ljseokd);
         assertNotEquals(ljseokd.getPassword(), "12345678");
         assertTrue(accountRepository.existsByEmail("ljseokd@gmail.com"));
+        then(emailService).should().sendEmail(any (EmailMessage.class));
     }
 
     @DisplayName("회원 가입 실패")
