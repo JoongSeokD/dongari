@@ -1,5 +1,7 @@
-package com.ljseokd.dongari.modules.account;
+package com.ljseokd.dongari.modules.account.validator;
 
+import com.ljseokd.dongari.modules.account.AccountRepository;
+import com.ljseokd.dongari.modules.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

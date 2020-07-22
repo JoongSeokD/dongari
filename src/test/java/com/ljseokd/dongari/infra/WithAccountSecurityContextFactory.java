@@ -1,7 +1,7 @@
 package com.ljseokd.dongari.infra;
 
 import com.ljseokd.dongari.modules.account.AccountService;
-import com.ljseokd.dongari.modules.account.SignUpForm;
+import com.ljseokd.dongari.modules.account.form.SignUpForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

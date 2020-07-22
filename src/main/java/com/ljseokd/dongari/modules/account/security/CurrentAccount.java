@@ -1,4 +1,4 @@
-package com.ljseokd.dongari.modules.account;
+package com.ljseokd.dongari.modules.account.security;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

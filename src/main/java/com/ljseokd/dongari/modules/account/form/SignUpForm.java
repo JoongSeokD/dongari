@@ -1,4 +1,4 @@
-package com.ljseokd.dongari.modules.account;
+package com.ljseokd.dongari.modules.account.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

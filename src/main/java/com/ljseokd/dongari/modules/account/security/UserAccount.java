@@ -1,5 +1,6 @@
-package com.ljseokd.dongari.modules.account;
+package com.ljseokd.dongari.modules.account.security;
 
+import com.ljseokd.dongari.modules.account.Account;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
