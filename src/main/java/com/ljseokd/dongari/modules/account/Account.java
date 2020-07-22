@@ -42,6 +42,8 @@ public class Account {
 
     private LocalDateTime joinedAt;
 
+    private boolean emailVerified;
+
 
     public void generateEmailCheckToken() {
         emailCheckToken = UUID.randomUUID().toString();
@@ -49,5 +51,14 @@ public class Account {
 
     public void emailCheckTokenGeneratedAt() {
         emailCheckTokenGeneratedAt = LocalDateTime.now();
+    }
+
+    public boolean isValidToken(String token) {
+        return emailCheckToken.equals(token);
+    }
+
+    public void completeSignUp() {
+        emailVerified = true;
+        joinedAt = LocalDateTime.now();
     }
 }
