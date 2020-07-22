@@ -22,8 +22,12 @@ spring:
           auth: true
           timeout: 5000
           starttls:
-            enable:true
+            enable: true
 
 logging:
   level:
     org.hibernate.SQL: debug
+
+
+app:
+  host: http://localhost:8080
