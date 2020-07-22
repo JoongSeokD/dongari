@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static lombok.AccessLevel.*;
 
@@ -42,4 +43,11 @@ public class Account {
     private LocalDateTime joinedAt;
 
 
+    public void generateEmailCheckToken() {
+        emailCheckToken = UUID.randomUUID().toString();
+    }
+
+    public void emailCheckTokenGeneratedAt() {
+        emailCheckTokenGeneratedAt = LocalDateTime.now();
+    }
 }
