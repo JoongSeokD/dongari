@@ -2,6 +2,8 @@ package com.ljseokd.dongari.modules.account;
 
 import com.ljseokd.dongari.infra.mail.EmailMessage;
 import com.ljseokd.dongari.infra.mail.EmailService;
+import com.ljseokd.dongari.modules.account.form.SignUpForm;
+import com.ljseokd.dongari.modules.account.security.UserAccount;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -38,6 +39,7 @@ public class AccountService implements UserDetailsService {
         signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
         Account account = modelMapper.map(signUpForm, Account.class);
         account.generateEmailCheckToken();
+        account.emailCheckTokenGeneratedAt();
         return accountRepository.save(account);
     }
 
@@ -53,10 +55,9 @@ public class AccountService implements UserDetailsService {
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(account.getEmail())
                 .subject("dongari, 회원 가입 인증")
-                .message("회원 가입 인증 토큰 : " + account.getEmailCheckToken())
+                .message("회원 가입 인증 토큰 : /check-email-token?token" + account.getEmailCheckToken() + "&email=" + account.getEmail())
                 .build();
         emailService.sendEmail(emailMessage);
-        account.emailCheckTokenGeneratedAt();
     }
 
 
@@ -72,5 +73,10 @@ public class AccountService implements UserDetailsService {
         }
 
         return new UserAccount(account);
+    }
+
+    public void completeSignUp(Account account) {
+        account.completeSignUp();
+        login(account);
     }
 }
